@@ -93,7 +93,7 @@ const login = () => {
 
 </script>
 
-<style>
+<style scoped>
 body {
   background: linear-gradient(to bottom right, #f2fbff, #cbdefa);
 }

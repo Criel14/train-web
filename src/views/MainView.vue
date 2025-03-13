@@ -1,18 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-header class="header">
-      <div class="logo"/>
-      <a-menu
-          v-model:selectedKeys="selectedKeys1"
-          theme="dark"
-          mode="horizontal"
-          :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">nav 1</a-menu-item>
-        <a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>
-      </a-menu>
-    </a-layout-header>
+    <HeaderBar/>
     <a-layout>
       <a-layout-sider width="200" style="background: #fff">
         <a-menu
@@ -77,13 +65,13 @@
 
 <script setup>
 import {ref} from 'vue';
+import HeaderBar from "@/components/HeaderBar.vue";
 
-const selectedKeys1 = ref(['2']);
 const selectedKeys2 = ref(['1']);
 const openKeys = ref(['sub1']);
 </script>
 
-<style>
+<style scoped>
 body {
   background: linear-gradient(to bottom right, #f2fbff, #cbdefa);
 }

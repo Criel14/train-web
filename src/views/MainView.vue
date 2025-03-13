@@ -83,7 +83,11 @@ const selectedKeys2 = ref(['1']);
 const openKeys = ref(['sub1']);
 </script>
 
-<style scoped>
+<style>
+body {
+  background: linear-gradient(to bottom right, #f2fbff, #cbdefa);
+}
+
 .logo {
   float: left;
   width: 120px;

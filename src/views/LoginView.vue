@@ -65,7 +65,7 @@ const loginForm = reactive({
 // const router = useRouter();
 
 const getCode = () => {
-  axios.post("http://localhost:8000/member/member/code", {
+  axios.post("/member/member/code", {
     mobile: loginForm.mobile
   }).then(response => {
     let data = response.data;
@@ -78,7 +78,7 @@ const getCode = () => {
 };
 
 const login = () => {
-  axios.post("http://localhost:8000/member/member/login", loginForm).then((response) => {
+  axios.post("/member/member/login", loginForm).then((response) => {
     let data = response.data;
     if (data.success) {
       notification.success({description: "登录成功"});

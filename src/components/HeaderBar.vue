@@ -1,11 +1,15 @@
 <template>
   <a-layout-header class="header">
     <div class="logo"/>
-    <div class="member-info">
-      您好：{{member.mobile}} &nbsp;&nbsp;
+    <div class="member-info" v-if="member && Object.keys(member).length">
+      您好：{{ member.mobile }} &nbsp;&nbsp;
       <router-link to="/login" style="color: #dff3ff">
         退出登录
       </router-link>
+    </div>
+    <div class="member-info" v-else>
+      未登录&nbsp;&nbsp;
+      请先 <router-link to="/login" style="color: #dff3ff">登录</router-link>
     </div>
     <a-menu
         v-model:selectedKeys="selectedKeys1"

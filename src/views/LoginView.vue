@@ -82,9 +82,10 @@ const login = () => {
     let data = response.data;
     if (data.success) {
       notification.success({description: "登录成功"});
+      // 存储到store
+      store.commit("setMember", data.content);
       // 登录成功，跳转到控台主页
       router.push("/");
-      store.commit("setMember", data.content);
     } else {
       notification.error({description: data.message});
     }
@@ -94,10 +95,6 @@ const login = () => {
 </script>
 
 <style scoped>
-body {
-  background: linear-gradient(to bottom right, #f2fbff, #cbdefa);
-}
-
 .title {
   display: flex;
   flex-direction: column;

@@ -25,7 +25,4 @@ import SideBar from "@/components/SideBar.vue";
 </script>
 
 <style scoped>
-body {
-  background: linear-gradient(to bottom right, #f2fbff, #cbdefa);
-}
 </style>

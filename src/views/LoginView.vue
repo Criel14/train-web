@@ -4,7 +4,7 @@
     <a-col :span="8" class="login">
       <div class="login-container">
         <a-row class="title">
-          <h1>智联票务</h1>
+          <h1>智程票务</h1>
         </a-row>
         <a-row>
           <a-form
@@ -116,7 +116,7 @@ const login = () => {
   background-color: #fff;
   border-radius: 10px;
 
-  margin-top: 20%;
+  margin-top: 30%;
 
   display: flex;
   flex-direction: column;

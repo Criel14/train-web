@@ -18,10 +18,11 @@ const routes = [
         },
     },
     // 兜底路由：匹配所有未定义的路径
+    // 进入自定义404页面
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
-        component: NotFoundComponent, // 自定义404页面
+        component: NotFoundComponent,
     },
 ]
 
@@ -34,7 +35,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     // 判断是否需要对meta.loginRequire属性做监控拦截
     if (to.matched.some(function (item) {
-        console.log(item, "是否需要登录校验：", item.meta.loginRequire || false);
+        console.log(item, "需要登录校验：", item.meta.loginRequire || false);
         return item.meta.loginRequire
     })) {
         const member = store.state.member;

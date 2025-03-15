@@ -3,7 +3,7 @@
     <div class="logo"/>
     <div class="member-info" v-if="member && Object.keys(member).length">
       您好：{{ member.mobile }} &nbsp;&nbsp;
-      <router-link to="/login" style="color: #dff3ff">
+      <router-link to="/login" style="color: #dff3ff" @click="logout">
         退出登录
       </router-link>
     </div>
@@ -30,6 +30,11 @@ import store from "@/store";
 
 const selectedKeys1 = ref(['2']);
 let member = store.state.member;
+
+const logout = () => {
+  store.commit("setMember", {});
+  console.log("退出登录");
+}
 
 </script>
 

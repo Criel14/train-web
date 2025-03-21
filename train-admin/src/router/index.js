@@ -14,6 +14,10 @@ const routes = [
         path: 'welcome',
         component: () => import('../views/main/WelcomeView.vue')
       },
+      {
+        path: 'station',
+        component: () => import('../views/main/StationView.vue')
+      }
     ]
   },
   {

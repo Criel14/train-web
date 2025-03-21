@@ -13,8 +13,8 @@
                 主菜单
               </span>
         </template>
-        <a-menu-item key="/passenger">
-          <router-link to="/passenger">xx管理</router-link>
+        <a-menu-item key="/station">
+          <router-link to="/station">车站管理</router-link>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>

@@ -16,6 +16,9 @@
         <a-menu-item key="/station">
           <router-link to="/station">车站管理</router-link>
         </a-menu-item>
+        <a-menu-item key="/train">
+          <router-link to="/train">车次管理</router-link>
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>

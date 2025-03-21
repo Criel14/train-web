@@ -4,7 +4,7 @@
       <a-button type="primary" @click="onAdd">新增</a-button>
     </p>
     <a-table
-        :dataSource="stations"
+        :dataSource="trains"
         :columns="columns"
         :pagination="pagination"
         @change="handleTableChange"
@@ -22,12 +22,19 @@
             </a-popconfirm>
           </a-space>
         </template>
+        <template v-else-if="column.dataIndex === 'type'">
+          <span v-for="item in TRAIN_TYPE_ARRAY" :key="item.code">
+            <span v-if="item.code === record.type">
+              {{ item.desc }}
+            </span>
+          </span>
+        </template>
       </template>
     </a-table>
-    <a-modal v-model:open="open" title="新增车站" @ok="handleOk">
+    <a-modal v-model:open="open" title="新增车次" @ok="handleOk">
       <a-form
           ref="formRef"
-          :model="station"
+          :model="train"
           name="basic"
           autocomplete="off"
           labelAlign="left"
@@ -36,25 +43,64 @@
           style="margin-top: 24px"
       >
         <a-form-item
-            label="车站名"
-            name="name"
-            :rules="[{ required: true, message: '车站名不能为空' }]"
+            label="车次编号"
+            name="code"
+            :rules="[{ required: true, message: '车次编号不能为空' }]"
         >
-          <a-input v-model:value="station.name"/>
+          <a-input v-model:value="train.code"/>
         </a-form-item>
         <a-form-item
-            label="拼音"
-            name="namePinyin"
-            :rules="[{ required: true, message: '车站名拼音不能为空' }]"
+            label="车次类型"
+            name="type"
+            :rules="[{ required: true, message: '类型不能为空' }]"
         >
-          <a-input v-model:value="station.namePinyin"/>
+          <a-select v-model:value="train.type">
+            <a-select-option v-for="item in TRAIN_TYPE_ARRAY" :key="item.code" :value="item.code">
+              {{ item.desc }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item
-            label="拼音首字母"
-            name="namePy"
-            :rules="[{ required: true, message: '拼音首字母不能为空' }]"
+            label="始发站"
+            name="start"
+            :rules="[{ required: true, message: '始发站不能为空' }]"
         >
-          <a-input v-model:value="station.namePy"/>
+          <a-input v-model:value="train.start"/>
+        </a-form-item>
+        <a-form-item
+            label="始发站拼音"
+            name="startPinyin"
+            :rules="[{ required: true, message: '始发站拼音不能为空' }]"
+        >
+          <a-input v-model:value="train.startPinyin"/>
+        </a-form-item>
+        <a-form-item
+            label="出发时间"
+            name="startTime"
+            :rules="[{ required: true, message: '出发时间不能为空' }]"
+        >
+          <a-time-picker v-model:value="train.startTime" valueFormat="HH:mm:ss" placeholder="请选择时间" />
+        </a-form-item>
+        <a-form-item
+            label="终点站"
+            name="end"
+            :rules="[{ required: true, message: '终点站不能为空' }]"
+        >
+          <a-input v-model:value="train.end"/>
+        </a-form-item>
+        <a-form-item
+            label="终点站拼音"
+            name="endPinyin"
+            :rules="[{ required: true, message: '终点站拼音不能为空' }]"
+        >
+          <a-input v-model:value="train.endPinyin"/>
+        </a-form-item>
+        <a-form-item
+            label="到站时间"
+            name="endTime"
+            :rules="[{ required: true, message: '到站时间不能为空' }]"
+        >
+          <a-time-picker v-model:value="train.endTime" valueFormat="HH:mm:ss" placeholder="请选择时间" />
         </a-form-item>
 
       </a-form>
@@ -71,41 +117,65 @@ import {onMounted, ref} from 'vue';
 import axios from "axios";
 import {notification} from "ant-design-vue";
 
+const TRAIN_TYPE_ARRAY = window.TRAIN_TYPE_ARRAY;
 const open = ref(false);
 const loading = ref(false);
-
-// 表格
-const stations = ref([]);
-let pagination = ref({
-  total: 0,
-  current: 1,
-  pageSize: 3,
-})
-
-let station = ref({
+let train = ref({
   id: undefined,
-  name: undefined,
-  namePinyin: undefined,
-  namePy: undefined,
+  code: undefined,
+  type: undefined,
+  start: undefined,
+  startPinyin: undefined,
+  startTime: undefined,
+  end: undefined,
+  endPinyin: undefined,
+  endTime: undefined,
   createTime: undefined,
   updateTime: undefined,
 });
 
+// 表格
+const trains = ref([]);
 const columns = [
   {
-    title: '站名',
-    dataIndex: 'name',
-    key: 'name',
+    title: '车次编号',
+    dataIndex: 'code',
+    key: 'code',
   },
   {
-    title: '站名拼音',
-    dataIndex: 'namePinyin',
-    key: 'namePinyin',
+    title: '车次类型',
+    dataIndex: 'type',
+    key: 'type',
   },
   {
-    title: '站名拼音首字母',
-    dataIndex: 'namePy',
-    key: 'namePy',
+    title: '始发站',
+    dataIndex: 'start',
+    key: 'start',
+  },
+  {
+    title: '始发站拼音',
+    dataIndex: 'startPinyin',
+    key: 'startPinyin',
+  },
+  {
+    title: '出发时间',
+    dataIndex: 'startTime',
+    key: 'startTime',
+  },
+  {
+    title: '终点站',
+    dataIndex: 'end',
+    key: 'end',
+  },
+  {
+    title: '终点站拼音',
+    dataIndex: 'endPinyin',
+    key: 'endPinyin',
+  },
+  {
+    title: '到站时间',
+    dataIndex: 'endTime',
+    key: 'endTime',
   },
   {
     title: '操作',
@@ -113,23 +183,28 @@ const columns = [
     key: 'operation',
   }
 ];
+let pagination = ref({
+  total: 0,
+  current: 1,
+  pageSize: 3,
+})
 
 const onAdd = () => {
   // 清空内容
-  station.value = {};
+  train.value = {};
   open.value = true;
 };
 
 const onEdit = (record) => {
   // 回显数据，record是本行数据（复制对象，不然修改窗口里的值不保存，也不刷新，那么表格里就会显示成刚才修改的内容）
-  station.value = JSON.parse(JSON.stringify(record));
+  train.value = JSON.parse(JSON.stringify(record));
   open.value = true;
 }
 
 const handleOk = async e => {
   loading.value = true;
   // 提交数据给后端
-  axios.post("/business/admin/station/save", station.value).then((response) => {
+  axios.post("/business/admin/train/save", train.value).then((response) => {
     let data = response.data;
     loading.value = false;
     if (data.success) {
@@ -148,7 +223,7 @@ const handleOk = async e => {
 };
 
 const onDelete = (record) => {
-  axios.delete("/business/admin/station/delete/" + record.id).then((response) => {
+  axios.delete("/business/admin/train/delete/" + record.id).then((response) => {
     let data = response.data;
     if (data.success) {
       notification.success({description: "删除成功"});
@@ -175,7 +250,7 @@ const handleQuery = (params) => {
     }
   }
   loading.value = true;
-  axios.get("/business/admin/station/query-list", {
+  axios.get("/business/admin/train/query-list", {
     params: {
       page: params.page,
       size: params.size
@@ -184,7 +259,7 @@ const handleQuery = (params) => {
     loading.value = false;
     let data = response.data;
     if (data.success) {
-      stations.value = data.content.list;
+      trains.value = data.content.list;
       pagination.value.current = params.page;
       pagination.value.total = data.content.total;
     } else {

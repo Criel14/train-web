@@ -37,7 +37,13 @@
           style="margin-top: 24px"
       >
         <a-form-item label="车次编号" :rules="[{ required: true, message: '车次编号不能为空' }]">
-          <a-input v-model:value="trainStation.trainCode"/>
+          <a-select v-model:value="trainStation.trainCode" show-search
+                    :filterOption="filterTrainCodeOption">
+            <a-select-option v-for="item in trains" :key="item.code" :value="item.code"
+                             :label="item.name + item.namePinyin + item.namePy">
+              {{ item.code }} | {{ item.start }} - {{ item.end }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="站序" :rules="[{ required: true, message: '站序不能为空' }]">
           <a-input v-model:value="trainStation.index"/>
@@ -93,6 +99,7 @@ const pagination = ref({
   pageSize: 10,
 });
 let loading = ref(false);
+const trains = ref([]);
 const columns = [
   {
     title: '车次编号',
@@ -146,7 +153,7 @@ const onAdd = () => {
 };
 
 const onEdit = (record) => {
-  trainStation.value = window.Tool.copy(record);
+  trainStation.value = JSON.parse(JSON.stringify(record));
   visible.value = true;
 };
 
@@ -165,6 +172,7 @@ const onDelete = (record) => {
   });
 };
 
+// 保存或修改数据
 const handleOk = () => {
   axios.post("/business/admin/train-station/save", trainStation.value).then((response) => {
     let data = response.data;
@@ -181,6 +189,7 @@ const handleOk = () => {
   });
 };
 
+// 分页查询火车列表
 const handleQuery = (param) => {
   if (!param) {
     param = {
@@ -208,6 +217,24 @@ const handleQuery = (param) => {
   });
 };
 
+// 查询所有火车车次
+const queryTrainCode = () => {
+  axios.get("/business/admin/train/query-all").then((response) => {
+    let data = response.data;
+    if (data.success) {
+      console.log("查询所有火车车次：" + JSON.stringify(data.content));
+      trains.value = data.content;
+    } else {
+      notification.error({description: data.message});
+    }
+  });
+}
+
+// 下拉框搜索
+const filterTrainCodeOption = (input, option) => {
+  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+}
+
 const handleTableChange = (page) => {
   // console.log("看看自带的分页参数都有啥：" + JSON.stringify(page));
   pagination.value.pageSize = page.pageSize;
@@ -222,6 +249,7 @@ onMounted(() => {
     page: 1,
     size: pagination.value.pageSize
   });
+  queryTrainCode();
 });
 
 watch(() => trainStation.value.name, () => {

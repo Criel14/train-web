@@ -139,7 +139,7 @@ const onAdd = () => {
 };
 
 const onEdit = (record) => {
-  trainCarriage.value = window.Tool.copy(record);
+  trainCarriage.value = JSON.parse(JSON.stringify(record));
   visible.value = true;
 };
 

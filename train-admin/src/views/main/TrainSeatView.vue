@@ -151,7 +151,7 @@ const onAdd = () => {
 };
 
 const onEdit = (record) => {
-  trainSeat.value = window.Tool.copy(record);
+  trainSeat.value = JSON.parse(JSON.stringify(record));
   visible.value = true;
 };
 

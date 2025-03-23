@@ -25,6 +25,9 @@
         <a-menu-item key="/train-carriage">
           <router-link to="/train-carriage">火车车厢管理</router-link>
         </a-menu-item>
+        <a-menu-item key="/train-seat">
+          <router-link to="/train-seat">火车座位管理</router-link>
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>

@@ -72,7 +72,7 @@
             name="startPinyin"
             :rules="[{ required: true, message: '始发站拼音不能为空' }]"
         >
-          <a-input v-model:value="train.startPinyin"/>
+          <a-input v-model:value="train.startPinyin" disabled/>
         </a-form-item>
         <a-form-item
             label="出发时间"
@@ -93,7 +93,7 @@
             name="endPinyin"
             :rules="[{ required: true, message: '终点站拼音不能为空' }]"
         >
-          <a-input v-model:value="train.endPinyin"/>
+          <a-input v-model:value="train.endPinyin" disabled/>
         </a-form-item>
         <a-form-item
             label="到站时间"
@@ -113,9 +113,10 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import {notification} from "ant-design-vue";
+import {pinyin} from "pinyin-pro";
 
 const TRAIN_TYPE_ARRAY = window.TRAIN_TYPE_ARRAY;
 const open = ref(false);
@@ -281,6 +282,23 @@ onMounted(() => {
     size: pagination.value.pageSize
   })
 })
+
+watch(() => train.value.start, ()=>{
+  if (train.value.start != null && train.value.start !== "") {
+    train.value.startPinyin = pinyin(train.value.start, { toneType: 'none'}).replaceAll(" ", "");
+  } else {
+    train.value.startPinyin = "";
+  }
+}, {immediate: true});
+
+watch(() => train.value.end, ()=>{
+  if (train.value.end != null && train.value.end !== "") {
+    train.value.endPinyin = pinyin(train.value.end, { toneType: 'none'}).replaceAll(" ", "");
+  } else {
+    train.value.endPinyin = "";
+  }
+}, {immediate: true});
+
 </script>
 
 <style scoped>

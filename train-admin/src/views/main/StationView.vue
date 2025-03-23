@@ -214,6 +214,7 @@ watch(() => station.value.name, () => {
     station.value.namePy = pinyin(station.value.name, { pattern: 'first', toneType: 'none'}).replaceAll(" ", "");
   } else {
     station.value.namePinyin = "";
+    station.value.namePy = "";
   }
 }, {immediate: true});
 

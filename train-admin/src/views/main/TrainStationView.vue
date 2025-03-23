@@ -37,13 +37,7 @@
           style="margin-top: 24px"
       >
         <a-form-item label="车次编号" :rules="[{ required: true, message: '车次编号不能为空' }]">
-          <a-select v-model:value="trainStation.trainCode" show-search
-                    :filterOption="filterTrainCodeOption">
-            <a-select-option v-for="item in trains" :key="item.code" :value="item.code"
-                             :label="item.name + item.namePinyin + item.namePy">
-              {{ item.code }} | {{ item.start }} - {{ item.end }}
-            </a-select-option>
-          </a-select>
+          <TrainSelect v-model="trainStation.trainCode"/>
         </a-form-item>
         <a-form-item label="站序" :rules="[{ required: true, message: '站序不能为空' }]">
           <a-input v-model:value="trainStation.index"/>
@@ -76,6 +70,7 @@ import {ref, onMounted, watch} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
 import {pinyin} from "pinyin-pro";
+import TrainSelect from "@/components/TrainSelect.vue";
 
 const visible = ref(false);
 let trainStation = ref({
@@ -217,39 +212,11 @@ const handleQuery = (param) => {
   });
 };
 
-// 查询所有火车车次
-const queryTrainCode = () => {
-  axios.get("/business/admin/train/query-all").then((response) => {
-    let data = response.data;
-    if (data.success) {
-      console.log("查询所有火车车次：" + JSON.stringify(data.content));
-      trains.value = data.content;
-    } else {
-      notification.error({description: data.message});
-    }
-  });
-}
-
-// 下拉框搜索
-const filterTrainCodeOption = (input, option) => {
-  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-}
-
-const handleTableChange = (page) => {
-  // console.log("看看自带的分页参数都有啥：" + JSON.stringify(page));
-  pagination.value.pageSize = page.pageSize;
-  handleQuery({
-    page: page.current,
-    size: page.pageSize
-  });
-};
-
 onMounted(() => {
   handleQuery({
     page: 1,
     size: pagination.value.pageSize
   });
-  queryTrainCode();
 });
 
 watch(() => trainStation.value.name, () => {

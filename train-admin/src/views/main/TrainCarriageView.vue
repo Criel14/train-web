@@ -44,7 +44,7 @@
           style="margin-top: 24px"
       >
         <a-form-item label="车次编号" :rules="[{ required: true, message: '车次编号不能为空' }]">
-          <a-input v-model:value="trainCarriage.trainCode"/>
+          <TrainSelect v-model="trainCarriage.trainCode" />
         </a-form-item>
         <a-form-item label="厢号" :rules="[{ required: true, message: '厢号不能为空' }]">
           <a-input v-model:value="trainCarriage.index"/>
@@ -74,6 +74,7 @@
 import {ref, onMounted} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
+import TrainSelect from "@/components/TrainSelect.vue";
 
 const SEAT_TYPE_ARRAY = window.SEAT_TYPE_ARRAY;
 const visible = ref(false);

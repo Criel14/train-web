@@ -46,7 +46,7 @@
           <a-input v-model:value="trainStation.name"/>
         </a-form-item>
         <a-form-item label="站名拼音" :rules="[{ required: true, message: '站名拼音不能为空' }]">
-          <a-input v-model:value="trainStation.namePinyin"/>
+          <a-input v-model:value="trainStation.namePinyin" disabled/>
         </a-form-item>
         <a-form-item label="进站时间" :rules="[{ required: true, message: '进站时间不能为空' }]">
           <a-time-picker v-model:value="trainStation.inTime" valueFormat="HH:mm:ss" placeholder="请选择时间"/>
@@ -66,9 +66,10 @@
 </template>
 
 <script setup>
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
+import {pinyin} from "pinyin-pro";
 
 const visible = ref(false);
 let trainStation = ref({
@@ -222,6 +223,14 @@ onMounted(() => {
     size: pagination.value.pageSize
   });
 });
+
+watch(() => trainStation.value.name, () => {
+  if (trainStation.value.name != null && trainStation.value.name !== "") {
+    trainStation.value.namePinyin = pinyin(trainStation.value.name, {toneType: 'none'}).replaceAll(" ", "");
+  } else {
+    trainStation.value.namePinyin = "";
+  }
+}, {immediate: true});
 
 
 </script>

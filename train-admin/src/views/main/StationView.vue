@@ -47,14 +47,14 @@
             name="namePinyin"
             :rules="[{ required: true, message: '车站名拼音不能为空' }]"
         >
-          <a-input v-model:value="station.namePinyin"/>
+          <a-input v-model:value="station.namePinyin" disabled/>
         </a-form-item>
         <a-form-item
             label="拼音首字母"
             name="namePy"
             :rules="[{ required: true, message: '拼音首字母不能为空' }]"
         >
-          <a-input v-model:value="station.namePy"/>
+          <a-input v-model:value="station.namePy" disabled/>
         </a-form-item>
 
       </a-form>
@@ -67,9 +67,10 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import {notification} from "ant-design-vue";
+import {pinyin} from "pinyin-pro";
 
 const open = ref(false);
 const loading = ref(false);
@@ -206,6 +207,17 @@ onMounted(() => {
     size: pagination.value.pageSize
   })
 })
+
+watch(() => station.value.name, () => {
+  if (station.value.name != null && station.value.name !== "") {
+    station.value.namePinyin = pinyin(station.value.name, {toneType: 'none'}).replaceAll(" ", "");
+    station.value.namePy = pinyin(station.value.name, { pattern: 'first', toneType: 'none'}).replaceAll(" ", "");
+  } else {
+    station.value.namePinyin = "";
+  }
+}, {immediate: true});
+
+
 </script>
 
 <style scoped>

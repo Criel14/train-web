@@ -2,7 +2,7 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Antd from 'ant-design-vue';
+import Antd, {notification} from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 import * as Icons from '@ant-design/icons-vue';
 import axios from 'axios';
@@ -31,6 +31,12 @@ axios.interceptors.response.use(function (response) {
     return response;
 }, error => {
     console.log('返回错误：', error);
+    // 捕获错误并显示通知
+    notification.error({
+        message: '网络请求错误，请稍后再试',
+        description: error.message, // 可选
+        duration: 3, // 持续时间，可根据需要调整
+    });
     return Promise.reject(error);
 });
 

@@ -20,7 +20,7 @@
           <router-link to="/train">车次管理</router-link>
         </a-menu-item>
         <a-menu-item key="/train-station">
-          <router-link to="/train-station">车次管理</router-link>
+          <router-link to="/train-station">车次车站管理</router-link>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>

@@ -43,7 +43,7 @@
           <a-input v-model:value="trainStation.index"/>
         </a-form-item>
         <a-form-item label="站名" :rules="[{ required: true, message: '站名不能为空' }]">
-          <a-input v-model:value="trainStation.name"/>
+          <StationSelect v-model="trainStation.name" />
         </a-form-item>
         <a-form-item label="站名拼音" :rules="[{ required: true, message: '站名拼音不能为空' }]">
           <a-input v-model:value="trainStation.namePinyin" disabled/>
@@ -71,6 +71,7 @@ import {notification} from "ant-design-vue";
 import axios from "axios";
 import {pinyin} from "pinyin-pro";
 import TrainSelect from "@/components/TrainSelect.vue";
+import StationSelect from "@/components/StationSelect.vue";
 
 const visible = ref(false);
 let trainStation = ref({

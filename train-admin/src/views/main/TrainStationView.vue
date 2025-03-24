@@ -3,7 +3,7 @@
     <p>
       <a-space>
         <TrainSelect v-model="params.trainCode" width="200px"/>
-        <a-button type="primary" @click="handleQuery">查找</a-button>
+        <a-button type="primary" @click="handleQuery()">查找</a-button>
         <a-button type="primary" @click="onAdd">新增</a-button>
       </a-space>
     </p>
@@ -196,7 +196,7 @@ const handleQuery = (param) => {
   if (!param) {
     param = {
       page: 1,
-      size: pagination.value.pageSize
+      size: 10,
     };
   }
   loading.value = true;

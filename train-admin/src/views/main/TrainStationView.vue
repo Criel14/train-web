@@ -45,7 +45,7 @@
           <a-input v-model:value="trainStation.index"/>
         </a-form-item>
         <a-form-item label="站名" :rules="[{ required: true, message: '站名不能为空' }]">
-          <StationSelect v-model="trainStation.name" />
+          <StationSelect v-model="trainStation.name"/>
         </a-form-item>
         <a-form-item label="站名拼音" :rules="[{ required: true, message: '站名拼音不能为空' }]">
           <a-input v-model:value="trainStation.namePinyin" disabled/>
@@ -98,7 +98,7 @@ const pagination = ref({
 });
 let loading = ref(false);
 let params = ref({
-  trainCode:{}
+  trainCode: null
 })
 
 const trains = ref([]);

@@ -5,12 +5,12 @@
             :style="'width: ' + localWidth">
     <a-select-option v-for="item in stations" :key="item.name" :value="item.name"
                      :label="item.name + item.namePinyin + item.namePy">
-      {{ item.name }} {{ item.namePinyin }} ~ {{ item.namePy }}
+      {{ item.name }} - {{ item.namePinyin }} - {{ item.namePy }}
     </a-select-option>
   </a-select>
 </template>
 
-<script>
+<script setup>
 
 import {defineComponent, onMounted, ref, watch} from 'vue';
 import axios from "axios";

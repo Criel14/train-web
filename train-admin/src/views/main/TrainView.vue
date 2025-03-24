@@ -65,7 +65,7 @@
             name="start"
             :rules="[{ required: true, message: '始发站不能为空' }]"
         >
-          <a-input v-model:value="train.start"/>
+          <StationSelect v-model="train.start" />
         </a-form-item>
         <a-form-item
             label="始发站拼音"
@@ -86,7 +86,7 @@
             name="end"
             :rules="[{ required: true, message: '终点站不能为空' }]"
         >
-          <a-input v-model:value="train.end"/>
+          <StationSelect v-model="train.end" />
         </a-form-item>
         <a-form-item
             label="终点站拼音"
@@ -117,6 +117,7 @@ import {onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import {notification} from "ant-design-vue";
 import {pinyin} from "pinyin-pro";
+import StationSelect from "@/components/StationSelect.vue";
 
 const TRAIN_TYPE_ARRAY = window.TRAIN_TYPE_ARRAY;
 const open = ref(false);
@@ -187,7 +188,7 @@ const columns = [
 let pagination = ref({
   total: 0,
   current: 1,
-  pageSize: 3,
+  pageSize: 10,
 })
 
 const onAdd = () => {

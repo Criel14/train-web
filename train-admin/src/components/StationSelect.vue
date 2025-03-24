@@ -27,7 +27,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
 const name = ref();
 const stations = ref([]);
 const localWidth = ref(props.width);
-if (props.width != null && props.width !== '') {
+if (props.width == null || props.width === '') {
   localWidth.value = "100%";
 }
 

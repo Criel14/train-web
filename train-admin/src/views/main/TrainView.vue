@@ -20,6 +20,12 @@
                 ok-text="确认" cancel-text="取消">
               <a style="color: red">删除</a>
             </a-popconfirm>
+            <a-popconfirm
+                title="将删除原有的座位信息，确定生成吗?"
+                @confirm="genSeat(record)"
+                ok-text="确认" cancel-text="取消">
+              <a>生成座位</a>
+            </a-popconfirm>
           </a-space>
         </template>
         <template v-else-if="column.dataIndex === 'type'">
@@ -226,10 +232,30 @@ const handleOk = async e => {
 };
 
 const onDelete = (record) => {
+  loading.value = true;
   axios.delete("/business/admin/train/delete/" + record.id).then((response) => {
     let data = response.data;
+    loading.value = false;
     if (data.success) {
       notification.success({description: "删除成功"});
+      // 刷新列表
+      handleQuery({
+        page: 1,
+        size: pagination.value.pageSize
+      });
+    } else {
+      notification.error({description: data.message});
+    }
+  })
+}
+
+const genSeat = (record) => {
+  loading.value = true;
+  axios.get("/business/admin/train/gen-seat/" + record.code).then((response) => {
+    let data = response.data;
+    loading.value = false;
+    if (data.success) {
+      notification.success({description: "生成成功"});
       // 刷新列表
       handleQuery({
         page: 1,

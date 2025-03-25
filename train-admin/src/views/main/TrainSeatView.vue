@@ -4,7 +4,6 @@
       <a-space>
         <TrainSelect v-model="params.trainCode" width="200px"/>
         <a-button type="primary" @click="handleQuery()">查找</a-button>
-        <a-button type="primary" @click="onAdd">新增</a-button>
       </a-space>
     </p>
     <a-table :dataSource="trainSeats"
@@ -13,18 +12,7 @@
              @change="handleTableChange"
              :loading="loading">
       <template #bodyCell="{ column, record }">
-        <template v-if="column.dataIndex === 'operation'">
-          <a-space>
-            <a @click="onEdit(record)">编辑</a>
-            <a-popconfirm
-                title="删除后不可恢复，确认删除?"
-                @confirm="onDelete(record)"
-                ok-text="确认" cancel-text="取消">
-              <a style="color: red">删除</a>
-            </a-popconfirm>
-          </a-space>
-        </template>
-        <template v-else-if="column.dataIndex === 'col'">
+        <template v-if="column.dataIndex === 'col'">
           <span v-for="item in SEAT_COL_ARRAY" :key="item.code">
             <span v-if="item.code === record.col">
               {{ item.desc }}
@@ -40,46 +28,6 @@
         </template>
       </template>
     </a-table>
-    <a-modal v-model:visible="visible" title="座位" @ok="handleOk"
-             ok-text="确认" cancel-text="取消">
-      <a-form
-          ref="formRef"
-          :model="trainSeat"
-          name="basic"
-          autocomplete="off"
-          labelAlign="left"
-          :label-col="{ span: 8 }"
-          :wrapper-col="{ span: 16 }"
-          style="margin-top: 24px"
-      >
-        <a-form-item label="车次编号" :rules="[{ required: true, message: '车次编号不能为空' }]">
-          <TrainSelect v-model="trainSeat.trainCode" />
-        </a-form-item>
-        <a-form-item label="厢序" :rules="[{ required: true, message: '厢序不能为空' }]">
-          <a-input v-model:value="trainSeat.carriageIndex"/>
-        </a-form-item>
-        <a-form-item label="排号" :rules="[{ required: true, message: '排号不能为空' }]">
-          <a-input v-model:value="trainSeat.row"/>
-        </a-form-item>
-        <a-form-item label="列号" :rules="[{ required: true, message: '列号不能为空' }]">
-          <a-select v-model:value="trainSeat.col">
-            <a-select-option v-for="item in SEAT_COL_ARRAY" :key="item.code" :value="item.code">
-              {{ item.desc }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="座位类型" :rules="[{ required: true, message: '座位类型不能为空' }]">
-          <a-select v-model:value="trainSeat.seatType">
-            <a-select-option v-for="item in SEAT_TYPE_ARRAY" :key="item.code" :value="item.code">
-              {{ item.desc }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="同车厢座序" :rules="[{ required: true, message: '同车厢座序不能为空' }]">
-          <a-input v-model:value="trainSeat.carriageSeatIndex"/>
-        </a-form-item>
-      </a-form>
-    </a-modal>
   </div>
 </template>
 
@@ -147,52 +95,7 @@ const columns = [
     dataIndex: 'carriageSeatIndex',
     key: 'carriageSeatIndex',
   },
-  {
-    title: '操作',
-    dataIndex: 'operation'
-  }
 ];
-
-const onAdd = () => {
-  trainSeat.value = {};
-  visible.value = true;
-};
-
-const onEdit = (record) => {
-  trainSeat.value = JSON.parse(JSON.stringify(record));
-  visible.value = true;
-};
-
-const onDelete = (record) => {
-  axios.delete("/business/admin/train-seat/delete/" + record.id).then((response) => {
-    const data = response.data;
-    if (data.success) {
-      notification.success({description: "删除成功！"});
-      handleQuery({
-        page: pagination.value.current,
-        size: pagination.value.pageSize,
-      });
-    } else {
-      notification.error({description: data.message});
-    }
-  });
-};
-
-const handleOk = () => {
-  axios.post("/business/admin/train-seat/save", trainSeat.value).then((response) => {
-    let data = response.data;
-    if (data.success) {
-      notification.success({description: "保存成功！"});
-      visible.value = false;
-      handleQuery({
-        page: pagination.value.current,
-        size: pagination.value.pageSize
-      });
-    } else {
-      notification.error({description: data.message});
-    }
-  });
-};
 
 const handleQuery = (param) => {
   if (!param) {

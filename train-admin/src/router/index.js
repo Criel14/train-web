@@ -3,6 +3,11 @@ import NotFoundComponent from "@/components/NotFoundComponent.vue";
 
 const routes = [
   {
+    // 首页重定向到欢迎页
+    path: '/',
+    redirect: '/welcome'
+  },
+  {
     path: '/',
     name: 'main',
     component: () => import('../views/MainView.vue'),
@@ -35,11 +40,6 @@ const routes = [
         component: () => import('../views/main/TrainSeatView.vue')
       },
     ]
-  },
-  {
-    // 首页重定向到欢迎页
-    path: '/',
-    redirect: '/welcome'
   },
 
   // 兜底路由：匹配所有未定义的路径

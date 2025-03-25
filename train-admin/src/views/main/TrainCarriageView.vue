@@ -97,6 +97,7 @@ const pagination = ref({
   total: 0,
   current: 1,
   pageSize: 10,
+  showSizeChanger: false,
 });
 let loading = ref(false);
 let params = ref({

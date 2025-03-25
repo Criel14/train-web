@@ -53,7 +53,7 @@
             name="code"
             :rules="[{ required: true, message: '车次编号不能为空' }]"
         >
-          <a-input v-model:value="train.code"/>
+          <a-input v-model:value="train.code" :disabled="!!train.id" />
         </a-form-item>
         <a-form-item
             label="车次类型"

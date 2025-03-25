@@ -56,9 +56,6 @@
         <a-form-item label="出站时间" :rules="[{ required: true, message: '出站时间不能为空' }]">
           <a-time-picker v-model:value="trainStation.outTime" valueFormat="HH:mm:ss" placeholder="请选择时间"/>
         </a-form-item>
-        <a-form-item label="停站时长" :rules="[{ required: true, message: '停站时长不能为空' }]">
-          <a-time-picker v-model:value="trainStation.stopTime" valueFormat="HH:mm:ss" placeholder="请选择时间"/>
-        </a-form-item>
         <a-form-item label="里程（公里）" :rules="[{ required: true, message: '里程不能为空' }]">
           <a-input v-model:value="trainStation.km"/>
         </a-form-item>
@@ -235,7 +232,6 @@ watch(() => trainStation.value.name, () => {
     trainStation.value.namePinyin = "";
   }
 }, {immediate: true});
-
 
 </script>
 

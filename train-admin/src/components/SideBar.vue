@@ -28,6 +28,9 @@
         <a-menu-item key="/train-seat">
           <router-link to="/train-seat">火车座位管理</router-link>
         </a-menu-item>
+        <a-menu-item key="/batch/job">
+          <router-link to="/batch/job">定时任务管理</router-link>
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>

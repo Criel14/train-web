@@ -6,6 +6,18 @@
         mode="inline"
         :style="{ height: '100%', borderRight: 0 }"
     >
+
+      <a-sub-menu key="batch">
+        <template #title>
+              <span>
+                定时任务管理
+              </span>
+        </template>
+        <a-menu-item key="/batch/job">
+          <router-link to="/batch/job">定时任务管理</router-link>
+        </a-menu-item>
+      </a-sub-menu>
+
       <a-sub-menu key="train">
         <template #title>
               <span>
@@ -29,16 +41,26 @@
         </a-menu-item>
       </a-sub-menu>
 
-      <a-sub-menu key="batch">
+      <a-sub-menu key="business">
         <template #title>
               <span>
-                定时任务管理
+                业务数据管理
               </span>
         </template>
-        <a-menu-item key="/batch/job">
-          <router-link to="/batch/job">定时任务管理</router-link>
+        <a-menu-item key="/business/daily-train">
+          <router-link to="/business/daily-train">每日车次管理</router-link>
+        </a-menu-item>
+        <a-menu-item key="/business/daily-train-station">
+          <router-link to="/business/daily-train-station">每日火车车站管理</router-link>
+        </a-menu-item>
+        <a-menu-item key="/business/daily-train-carriage">
+          <router-link to="/business/daily-train-carriage">每日火车车厢管理</router-link>
+        </a-menu-item>
+        <a-menu-item key="/business/daily-train-seat">
+          <router-link to="/business/daily-train-seat">每日火车座位管理</router-link>
         </a-menu-item>
       </a-sub-menu>
+
     </a-menu>
   </a-layout-sider>
 </template>

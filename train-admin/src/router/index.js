@@ -70,7 +70,7 @@ const routes = [
                     },
                     {
                         path: 'daily-train-seat',
-                        component: () => import('../views/main/batch/TrainSeatView.vue')
+                        component: () => import('../views/main/business/DailyTrainSeat.vue')
                     },
                 ]
             },

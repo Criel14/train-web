@@ -9,7 +9,7 @@
       <a-sub-menu key="train">
         <template #title>
               <span>
-                火车管理
+                基础数据管理
               </span>
         </template>
         <a-menu-item key="/train/station">

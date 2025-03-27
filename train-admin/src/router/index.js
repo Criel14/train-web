@@ -62,7 +62,7 @@ const routes = [
                     },
                     {
                         path: 'daily-train-station',
-                        component: () => import('../views/main/batch/TrainStationView.vue')
+                        component: () => import('../views/main/business/DailyTrainStation.vue')
                     },
                     {
                         path: 'daily-train-carriage',

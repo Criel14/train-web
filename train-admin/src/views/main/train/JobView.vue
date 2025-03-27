@@ -49,7 +49,9 @@
                 ok-text="是"
                 cancel-text="否"
                 @confirm="handleDelete(record)">
-              <a-button type="danger" size="small" style="color: red">删除</a-button>
+              <a type="danger" size="small" style="color: red">
+                删除
+              </a>
             </a-popconfirm>
           </a-space>
         </template>

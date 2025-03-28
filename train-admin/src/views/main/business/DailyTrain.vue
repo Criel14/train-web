@@ -6,6 +6,7 @@
         <TrainSelect v-model="myParams.code" width="200px"/>
         <a-button type="primary" @click="handleQuery()">查找</a-button>
         <a-button type="primary" @click="onAdd">新增</a-button>
+        <a-button type="primary" @click="onClickGenDaily">手动生成车次相关信息</a-button>
       </a-space>
     </p>
     <a-table :dataSource="dailyTrains"
@@ -79,6 +80,24 @@
         </a-form-item>
       </a-form>
     </a-modal>
+
+    <a-modal v-model:visible="genDailyVisible" title="生成车次" @ok="handleGenDailyOk"
+             :confirm-loading="genDailyLoading" ok-text="确认" cancel-text="取消">
+      <a-form
+          ref="formRef"
+          :model="genDaily"
+          name="basic"
+          autocomplete="off"
+          labelAlign="left"
+          :label-col="{ span: 8 }"
+          :wrapper-col="{ span: 16 }"
+          style="margin-top: 24px"
+      >
+        <a-form-item label="日期">
+          <a-date-picker v-model:value="genDaily.date" style="width: 300px;" placeholder="请选择日期"/>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -87,9 +106,16 @@ import {ref, onMounted} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
 import TrainSelect from "@/components/TrainSelect.vue";
+import dayjs from "dayjs";
 
 const TRAIN_TYPE_ARRAY = window.TRAIN_TYPE_ARRAY;
-const visible = ref(false);
+let visible = ref(false);
+let loading = ref(false);
+let genDailyVisible = ref(false);
+let genDailyLoading = ref(false);
+let genDaily = ref({
+  date: undefined
+});
 let dailyTrain = ref({
   id: undefined,
   date: undefined,
@@ -108,7 +134,6 @@ let myParams = ref({
   code: undefined,
   date: undefined,
 })
-let loading = ref(false);
 const dailyTrains = ref([]);
 // 分页的三个属性名是固定的
 const pagination = ref({
@@ -178,6 +203,10 @@ const onEdit = (record) => {
   visible.value = true;
 };
 
+const onClickGenDaily = () => {
+  genDailyVisible.value = true;
+};
+
 const onDelete = (record) => {
   axios.delete("/business/admin/daily-train/delete/" + record.id).then((response) => {
     const data = response.data;
@@ -199,6 +228,25 @@ const handleOk = () => {
     if (data.success) {
       notification.success({description: "保存成功！"});
       visible.value = false;
+      handleQuery({
+        page: pagination.value.current,
+        size: pagination.value.pageSize
+      });
+    } else {
+      notification.error({description: data.message});
+    }
+  });
+};
+
+const handleGenDailyOk = () => {
+  let date = dayjs(genDaily.value.date).format("YYYY-MM-DD");
+  genDailyLoading.value = true;
+  axios.get("/business/admin/daily-train/gen-daily/" + date).then((response) => {
+    genDailyLoading.value = false;
+    let data = response.data;
+    if (data.success) {
+      notification.success({description: "生成成功！"});
+      genDailyVisible.value = false;
       handleQuery({
         page: pagination.value.current,
         size: pagination.value.pageSize

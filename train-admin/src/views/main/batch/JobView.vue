@@ -19,29 +19,27 @@
                 ok-text="是"
                 cancel-text="否"
                 @confirm="handleRun(record)">
-              <a type="primary" size="small">
+              <a type="primary">
                 手动执行
               </a>
             </a-popconfirm>
             <a-popconfirm
+                v-if="record.state === 'PAUSED' || record.state === 'ERROR'" type="primary"
                 title="确定重启？"
                 ok-text="是"
                 cancel-text="否"
                 @confirm="handleResume(record)">
-              <a v-show="record.state === 'PAUSED' || record.state === 'ERROR'" type="primary" size="small">
-                重启
-              </a>
+              <a type="primary">重启</a>
             </a-popconfirm>
             <a-popconfirm
+                v-else-if="record.state === 'NORMAL' || record.state === 'BLOCKED'" type="primary"
                 title="确定暂停？"
                 ok-text="是"
                 cancel-text="否"
                 @confirm="handlePause(record)">
-              <a v-show="record.state === 'NORMAL' || record.state === 'BLOCKED'" type="primary" size="small">
-                暂停
-              </a>
+              <a type="primary">暂停</a>
             </a-popconfirm>
-            <a type="primary" @click="handleEdit(record)" size="small">
+            <a type="primary" @click="handleEdit(record)">
               编辑
             </a>
             <a-popconfirm
@@ -49,7 +47,7 @@
                 ok-text="是"
                 cancel-text="否"
                 @confirm="handleDelete(record)">
-              <a type="danger" size="small" style="color: red">
+              <a type="danger" style="color: red">
                 删除
               </a>
             </a-popconfirm>

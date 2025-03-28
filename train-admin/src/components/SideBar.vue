@@ -1,7 +1,7 @@
 <template>
   <a-layout-sider width="200" style="background: #fff">
     <a-menu
-        v-model:selectedKeys="selectedKeys2"
+        v-model:selectedKeys="selectedKeys"
         v-model:openKeys="openKeys"
         mode="inline"
         :style="{ height: '100%', borderRight: 0 }"
@@ -68,8 +68,8 @@
 <script setup>
 import {ref} from "vue";
 
-const selectedKeys2 = ref(['1']);
-const openKeys = ref(['sub1']);
+const selectedKeys = ref([]);
+const openKeys = ref(["batch", "train", "business"]);
 </script>
 
 <style scoped>

@@ -2,6 +2,10 @@
   <div class="container">
     <p>
       <a-space>
+        <a-date-picker v-model:value="myParams.date" valueFormat="YYYY-MM-DD" placeholder="请选择日期"/>
+        <TrainSelect v-model="myParams.trainCode" width="200px"/>
+        <StationSelect v-model="myParams.start" placeholder="请选择出发站" width="200px"/>
+        <StationSelect v-model="myParams.end" placeholder="请选择到达站" width="200px"/>
         <a-button type="primary" @click="handleQuery()">查找</a-button>
       </a-space>
     </p>
@@ -15,9 +19,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import {ref, onMounted} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
+import TrainSelect from "@/components/TrainSelect.vue";
+import StationSelect from "@/components/StationSelect.vue";
 
 const visible = ref(false);
 let dailyTrainTicket = ref({
@@ -43,6 +49,15 @@ let dailyTrainTicket = ref({
   createTime: undefined,
   updateTime: undefined,
 });
+let loading = ref(false);
+
+let myParams = ref({
+  date: undefined,
+  trainCode: undefined,
+  start: undefined,
+  end: undefined
+})
+
 const dailyTrainTickets = ref([]);
 // 分页的三个属性名是固定的
 const pagination = ref({
@@ -50,7 +65,6 @@ const pagination = ref({
   current: 1,
   pageSize: 10,
 });
-let loading = ref(false);
 const columns = [
   {
     title: '日期',
@@ -155,7 +169,11 @@ const handleQuery = (param) => {
   axios.get("/business/admin/daily-train-ticket/query-list", {
     params: {
       page: param.page,
-      size: param.size
+      size: param.size,
+      date: myParams.value.date,
+      trainCode: myParams.value.trainCode,
+      start: myParams.value.start,
+      end: myParams.value.end
     }
   }).then((response) => {
     loading.value = false;

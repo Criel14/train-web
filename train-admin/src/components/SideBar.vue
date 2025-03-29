@@ -47,6 +47,9 @@
                 业务数据管理
               </span>
         </template>
+        <a-menu-item key="/business/daily-train-ticket">
+          <router-link to="/business/daily-train-ticket">每日火车余票管理</router-link>
+        </a-menu-item>
         <a-menu-item key="/business/daily-train">
           <router-link to="/business/daily-train">每日车次管理</router-link>
         </a-menu-item>

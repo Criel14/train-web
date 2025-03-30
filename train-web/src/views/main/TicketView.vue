@@ -3,7 +3,6 @@
     <p>
       <a-space>
         <a-date-picker v-model:value="myParams.date" valueFormat="YYYY-MM-DD" placeholder="请选择日期"/>
-        <TrainSelect v-model="myParams.trainCode" width="200px"/>
         <StationSelect v-model="myParams.start" placeholder="请选择出发站" width="200px"/>
         <StationSelect v-model="myParams.end" placeholder="请选择到达站" width="200px"/>
         <a-button type="primary" @click="handleQuery()">查找</a-button>
@@ -71,7 +70,6 @@
 import {onMounted, ref} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
-import TrainSelect from "@/components/TrainSelect.vue";
 import StationSelect from "@/components/StationSelect.vue";
 import dayjs from "dayjs";
 
@@ -103,7 +101,6 @@ let loading = ref(false);
 
 let myParams = ref({
   date: undefined,
-  trainCode: undefined,
   start: undefined,
   end: undefined
 })
@@ -116,11 +113,6 @@ const pagination = ref({
   pageSize: 10,
 });
 const columns = [
-  {
-    title: '日期',
-    dataIndex: 'date',
-    key: 'date',
-  },
   {
     title: '车次编号',
     dataIndex: 'trainCode',
@@ -164,6 +156,19 @@ const columns = [
 ];
 
 const handleQuery = (param) => {
+  if (myParams.value.date == null) {
+    notification.error({description: "请输入日期"});
+    return;
+  }
+  if (myParams.value.start == null) {
+    notification.error({description: "请输入起点站"});
+    return;
+  }
+  if (myParams.value.end == null) {
+    notification.error({description: "请输入终点站"});
+    return;
+  }
+
   if (!param) {
     param = {
       page: 1,
@@ -176,7 +181,6 @@ const handleQuery = (param) => {
       page: param.page,
       size: param.size,
       date: myParams.value.date,
-      trainCode: myParams.value.trainCode,
       start: myParams.value.start,
       end: myParams.value.end
     }
@@ -208,10 +212,11 @@ const handleTableChange = (page) => {
 };
 
 onMounted(() => {
-  handleQuery({
-    page: 1,
-    size: pagination.value.pageSize
-  });
+  // 初始不查询了
+  // handleQuery({
+  //   page: 1,
+  //   size: pagination.value.pageSize
+  // });
 });
 
 

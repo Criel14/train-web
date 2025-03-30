@@ -6,7 +6,7 @@
         mode="inline"
         :style="{ height: '100%', borderRight: 0 }"
     >
-      <a-sub-menu key="sub1">
+      <a-sub-menu key="main">
         <template #title>
               <span>
                 <user-outlined/>
@@ -16,6 +16,9 @@
         <a-menu-item key="/passenger">
           <router-link to="/passenger">乘车人管理</router-link>
         </a-menu-item>
+        <a-menu-item key="/ticket">
+          <router-link to="/ticket">余票查询</router-link>
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>
@@ -24,8 +27,8 @@
 <script setup>
 import {ref} from "vue";
 
-const selectedKeys2 = ref(['1']);
-const openKeys = ref(['sub1']);
+const selectedKeys2 = ref(['']);
+const openKeys = ref(['main']);
 </script>
 
 <style scoped>

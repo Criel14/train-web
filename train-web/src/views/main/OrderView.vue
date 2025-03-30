@@ -1,20 +1,21 @@
 <template>
   <div class="order-train">
-    <span class="order-train-main">{{ dailyTrainTicket.date }}</span>&nbsp;
-    <span class="order-train-main">{{ dailyTrainTicket.trainCode }}</span>次&nbsp;
+    <span class="order-train-main" style="margin-left: 0;">{{ dailyTrainTicket.date }}</span>
+    <span class="order-train-main">{{ dailyTrainTicket.trainCode }}</span>次
     <span class="order-train-main">{{ dailyTrainTicket.start }}</span>站
-    <span class="order-train-main">({{ dailyTrainTicket.startTime }})</span>&nbsp;
-    <span class="order-train-main">——</span>&nbsp;
+    <span class="order-train-main">({{ dailyTrainTicket.startTime }})</span>
+    <span class="order-train-main">——</span>
     <span class="order-train-main">{{ dailyTrainTicket.end }}</span>站
-    <span class="order-train-main">({{ dailyTrainTicket.endTime }})</span>&nbsp;
+    <span class="order-train-main">({{ dailyTrainTicket.endTime }})</span>
 
-    <!--    <div class="order-train-ticket">-->
-    <!--      <span v-for="item in seatTypes" :key="item.type">-->
-    <!--        <span>{{ item.desc }}</span>：-->
-    <!--        <span class="order-train-ticket-main">{{ item.price }}￥</span>&nbsp;-->
-    <!--        <span class="order-train-ticket-main">{{ item.count }}</span>&nbsp;张票&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-    <!--      </span>-->
-    <!--    </div>-->
+        <div class="order-train-ticket">
+          <span v-for="item in seatTypes" :key="item.type">
+            <span>{{ item.desc }}</span>
+            <span class="order-train-ticket-main">({{ item.price }}元)</span>
+            <span class="order-train-ticket-main">{{ item.count }}</span>
+            <span style="margin-right: 30px">张票</span>
+          </span>
+        </div>
   </div>
   <!--  <a-divider></a-divider>-->
   <!--  <b>勾选要购票的乘客：</b>&nbsp;-->
@@ -116,21 +117,11 @@ const dailyTrainTicket = JSON.parse(window.sessionStorage.getItem(window.SESSION
 console.log("下单的车次信息", dailyTrainTicket);
 
 const SEAT_TYPE = window.SEAT_TYPE;
-console.log(SEAT_TYPE)
-
-// 本车次提供的座位类型seatTypes，含票价，余票等信息，例：
-// {
-//   type: "YDZ",
-//   code: "1",
-//   desc: "一等座",
-//   count: "100",
-//   price: "50",
-// }
-// 关于SEAT_TYPE[KEY]：当知道某个具体的属性xxx时，可以用obj.xxx，当属性名是个变量时，可以使用obj[xxx]
 
 const seatTypes = [];
 for (let KEY in SEAT_TYPE) {
   let key = KEY.toLowerCase();
+  // 去除没有的座位类型
   if (dailyTrainTicket[key] >= 0) {
     seatTypes.push({
       type: KEY,
@@ -141,7 +132,6 @@ for (let KEY in SEAT_TYPE) {
     })
   }
 }
-
 console.log("本车次提供的座位：", seatTypes)
 
 // 购票列表，用于界面展示，并传递到后端接口，用来描述：哪个乘客购买什么座位的票
@@ -338,8 +328,7 @@ const visible = ref(false);
 .order-train .order-train-main {
   font-size: 18px;
   font-weight: bold;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 20px;
 }
 
 .order-train .order-train-ticket {
@@ -348,7 +337,8 @@ const visible = ref(false);
 
 .order-train .order-train-ticket .order-train-ticket-main {
   color: red;
-  font-size: 18px;
+  font-weight: bold;
+  margin-left: 10px;
 }
 
 .order-tickets {

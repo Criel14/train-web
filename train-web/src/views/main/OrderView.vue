@@ -307,7 +307,7 @@ const handleOk = () => {
 
   console.log("最终购票：", tickets.value);
   loading.value = true;
-  axios.post("/business/confirm-order/do", {
+  axios.post("/business/confirm-order/confirm", {
     dailyTrainTicketId: dailyTrainTicket.id,
     date: dailyTrainTicket.date,
     trainCode: dailyTrainTicket.trainCode,

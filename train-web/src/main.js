@@ -37,12 +37,8 @@ axios.interceptors.response.use(function (response) {
 }, error => {
     console.log('返回错误：', error);
     const response = error.response;
-    if (response == null) {
-        return Promise.reject(error);
-    }
-    const status = response.status;
     // 判断状态码是401 跳转到登录页
-    if (status === 401) {
+    if (response != null && response.status === 401) {
         console.log("未登录或登录超时，跳到登录页");
         // 会员信息置为空对象
         store.commit("setMember", {});
@@ -54,6 +50,12 @@ axios.interceptors.response.use(function (response) {
         // 此处不再返回reject，直接返回一个空对象（或其他默认值）
         return Promise.resolve({data: {}});
     }
+    // 捕获错误并显示通知
+    notification.error({
+        message: '网络请求错误，请稍后再试',
+        description: error.message, // 可选
+        duration: 3, // 持续时间，可根据需要调整
+    });
     return Promise.reject(error);
 });
 

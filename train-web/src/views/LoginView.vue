@@ -71,7 +71,7 @@ const getCode = () => {
   }).then(response => {
     let data = response.data;
     if (data.success) {
-      notification.success({description: "获取验证码成功"});
+      notification.success({description: "验证码已发送"});
     } else {
       notification.error({description: data.message});
     }

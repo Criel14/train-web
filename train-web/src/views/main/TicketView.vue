@@ -14,7 +14,10 @@
              @change="handleTableChange"
              :loading="loading">
       <template #bodyCell="{ column, record }">
-        <template v-if="column.dataIndex === 'stations'">
+        <template v-if="column.dataIndex === 'operation'">
+          <a-button type="primary" @click="toOrder(record)">预订</a-button>
+        </template>
+        <template v-else-if="column.dataIndex === 'stations'">
           {{ record.start }} - <br> {{ record.end }}
         </template>
         <template v-else-if="column.dataIndex === 'times'">
@@ -72,6 +75,7 @@ import {notification} from "ant-design-vue";
 import axios from "axios";
 import StationSelect from "@/components/StationSelect.vue";
 import dayjs from "dayjs";
+import router from "@/router";
 
 const visible = ref(false);
 let dailyTrainTicket = ref({
@@ -153,6 +157,11 @@ const columns = [
     dataIndex: 'yw',
     key: 'yw',
   },
+  {
+    title: '操作',
+    dataIndex: 'operation',
+    key: 'operation',
+  },
 ];
 
 const handleQuery = (param) => {
@@ -168,6 +177,8 @@ const handleQuery = (param) => {
     notification.error({description: "请输入终点站"});
     return;
   }
+  // 缓存到session
+  window.sessionStorage.setItem(window.SESSION_TICKET_PARAMS, JSON.stringify(myParams.value));
 
   if (!param) {
     param = {
@@ -211,12 +222,19 @@ const handleTableChange = (page) => {
   });
 };
 
+const toOrder = (record) => {
+  window.sessionStorage.setItem(window.SESSION_ORDER, JSON.stringify(record));
+  router.push("/order");
+}
+
 onMounted(() => {
-  // 初始不查询了
-  // handleQuery({
-  //   page: 1,
-  //   size: pagination.value.pageSize
-  // });
+  myParams.value = JSON.parse(window.sessionStorage.getItem(window.SESSION_TICKET_PARAMS)) || {};
+  if (myParams.value != null && myParams.value !== {}) {
+    handleQuery({
+      page: 1,
+      size: pagination.value.pageSize
+    });
+  }
 });
 
 

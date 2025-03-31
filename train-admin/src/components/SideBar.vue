@@ -86,7 +86,7 @@
 import {ref} from "vue";
 
 const selectedKeys = ref([]);
-const openKeys = ref(["batch", "train", "business"]);
+const openKeys = ref(["batch", "train", "business", "member"]);
 </script>
 
 <style scoped>

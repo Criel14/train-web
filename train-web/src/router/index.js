@@ -33,6 +33,10 @@ const routes = [
                 path: 'order',
                 component: () => import('../views/main/OrderView.vue')
             },
+            {
+                path: 'my-ticket',
+                component: () => import('../views/main/MyTicketView.vue')
+            },
         ]
     },
     {

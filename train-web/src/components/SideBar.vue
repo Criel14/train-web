@@ -17,7 +17,7 @@
           <router-link to="/passenger">乘车人管理</router-link>
         </a-menu-item>
         <a-menu-item key="/ticket">
-          <router-link to="/ticket">余票查询</router-link>
+          <router-link to="/ticket">购票</router-link>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>

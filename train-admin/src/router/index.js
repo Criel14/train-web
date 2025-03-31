@@ -82,6 +82,15 @@ const routes = [
                     },
                 ]
             },
+            {
+                path: 'member/',
+                children: [
+                    {
+                        path: 'ticket',
+                        component: () => import('../views/main/member/TicketView.vue')
+                    },
+                ]
+            },
         ]
     },
 

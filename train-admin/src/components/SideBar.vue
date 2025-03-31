@@ -67,6 +67,17 @@
         </a-menu-item>
       </a-sub-menu>
 
+      <a-sub-menu key="member">
+        <template #title>
+              <span>
+                会员数据管理
+              </span>
+        </template>
+        <a-menu-item key="/member/ticket">
+          <router-link to="/member/ticket">会员车票管理</router-link>
+        </a-menu-item>
+      </a-sub-menu>
+
     </a-menu>
   </a-layout-sider>
 </template>

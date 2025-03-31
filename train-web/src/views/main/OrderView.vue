@@ -17,6 +17,7 @@
             <span style="margin-right: 30px">张票</span>
           </span>
       </div>
+<!--  TODO 展示车次的相关信息：车厢数、途径车站等    -->
     </div>
     <a-divider/>
     <b>选择乘车人</b>&nbsp;

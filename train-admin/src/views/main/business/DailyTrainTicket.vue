@@ -113,7 +113,7 @@ const dailyTrainTickets = ref([]);
 const pagination = ref({
   total: 0,
   current: 1,
-  pageSize: 10,
+  pageSize: 8,
 });
 const columns = [
   {

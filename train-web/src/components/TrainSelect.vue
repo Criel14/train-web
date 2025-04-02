@@ -12,7 +12,7 @@
 
 <script setup>
 
-import { onMounted, ref, watch} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import {notification} from "ant-design-vue";
 
@@ -42,14 +42,22 @@ watch(() => props.modelValue, () => {
  * 查询所有的车次，用于车次下拉框
  */
 const queryAllTrain = () => {
-  axios.get("/business/train/query-all").then((response) => {
-    let data = response.data;
-    if (data.success) {
-      trains.value = data.content;
-    } else {
-      notification.error({description: data.message});
-    }
-  });
+  // 先读取缓存
+  let trainList = window.sessionStorage.getItem(window.SESSION_ALL_TRAIN);
+  if (trainList != null) {
+    trains.value = JSON.parse(trainList);
+  } else {
+    axios.get("/business/train/query-all").then((response) => {
+      let data = response.data;
+      if (data.success) {
+        trains.value = data.content;
+        // 保存缓存
+        window.sessionStorage.setItem(window.SESSION_ALL_TRAIN, JSON.stringify(data.content));
+      } else {
+        notification.error({description: data.message});
+      }
+    });
+  }
 };
 
 /**

@@ -47,14 +47,21 @@ watch(() => props.modelValue, () => {
  * 查询所有的车站，用于车站下拉框
  */
 const queryAllStation = () => {
-  axios.get("/business/station/query-all").then((response) => {
-    const data = response.data;
-    if (data.success) {
-      stations.value = data.content;
-    } else {
-      notification.error({description: data.message});
-    }
-  });
+  let stationList = window.sessionStorage.getItem(window.SESSION_ALL_STATION);
+  if (stationList != null) {
+    stations.value = JSON.parse(stationList);
+  } else {
+    axios.get("/business/station/query-all").then((response) => {
+      const data = response.data;
+      if (data.success) {
+        stations.value = data.content;
+        // 保存缓存
+        window.sessionStorage.setItem(window.SESSION_ALL_STATION, JSON.stringify(data.content));
+      } else {
+        notification.error({description: data.message});
+      }
+    });
+  }
 };
 
 /**

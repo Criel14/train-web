@@ -80,6 +80,10 @@ const routes = [
                         path: 'confirm-order',
                         component: () => import('../views/main/business/ConfirmOrder.vue')
                     },
+                    {
+                        path: 'sk-token',
+                        component: () => import('../views/main/business/SkTokenView.vue')
+                    },
                 ]
             },
             {

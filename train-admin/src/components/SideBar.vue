@@ -65,6 +65,9 @@
         <a-menu-item key="/business/daily-train-seat">
           <router-link to="/business/daily-train-seat">每日火车座位管理</router-link>
         </a-menu-item>
+        <a-menu-item key="/business/sk-token">
+          <router-link to="/business/sk-token">令牌管理</router-link>
+        </a-menu-item>
       </a-sub-menu>
 
       <a-sub-menu key="member">

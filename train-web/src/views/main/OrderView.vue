@@ -17,7 +17,7 @@
             <span style="margin-right: 30px">张票</span>
           </span>
       </div>
-<!--  TODO 展示车次的相关信息：车厢数、途径车站等    -->
+      <!--  TODO 展示车次的相关信息：车厢数、途径车站等    -->
     </div>
     <a-divider/>
     <b>选择乘车人</b>&nbsp;
@@ -111,6 +111,19 @@
         <!--        最终选座：{{ chooseSeatObj }}-->
       </div>
     </a-modal>
+
+    <a-modal v-model:visible="lineUpVisible"
+             title="订单信息"
+             style="top: 50px; width: 800px"
+    >
+      <div v-if="lineUpCount > 0">
+        系统正在处理中... 您前面还有{{ lineUpCount }}位用户正在排队，请稍后
+      </div>
+      <div v-else>
+        系统正在处理中...
+      </div>
+
+    </a-modal>
   </div>
 </template>
 
@@ -148,6 +161,9 @@ console.log("本车次提供的座位：", seatTypes)
 const tickets = ref([]);
 const PASSENGER_TYPE_ARRAY = window.PASSENGER_TYPE_ARRAY;
 const visible = ref(false);
+const lineUpVisible = ref(false);
+const confirmOrderId = ref();
+const lineUpCount = ref(-4); // 默认是【取消】状态
 
 // 勾选或去掉某个乘客时，在购票列表中加上或去掉一张表
 watch(() => passengerChecks.value, (newVal, oldVal) => {
@@ -320,11 +336,49 @@ const handleOk = () => {
     let data = response.data;
     visible.value = true;
     if (data.success) {
-      notification.success({description: "预订成功！"});
+      visible.value = false;
+      lineUpVisible.value = true;
+      confirmOrderId.value = data.content;
+      // 查询订单状态
+      queryOrderStatus();
     } else {
       notification.error({description: data.message});
     }
   });
+}
+
+let queryOrderInterval = null;
+const queryOrderStatus = () => {
+  lineUpCount.value = -1;
+  queryOrderInterval = setInterval(function () {
+    axios.get("/business/confirm-order/query-line-up-count/" + confirmOrderId.value).then((response) => {
+      let data = response.data;
+      if (data.success) {
+        let result = data.content;
+        switch (result) {
+          case -1 :
+            notification.success({description: "购票成功"});
+            lineUpVisible.value = false;
+            clearInterval(queryOrderInterval);
+            break;
+          case -2:
+            notification.error({description: "购票失败"});
+            lineUpVisible.value = false;
+            clearInterval(queryOrderInterval);
+            break;
+          case -3:
+            notification.error({description: "当前车票已买完"});
+            lineUpVisible.value = false;
+            clearInterval(queryOrderInterval);
+            break;
+          default:
+            lineUpCount.value = result;
+        }
+      } else {
+        notification.error({description: data.message});
+      }
+    });
+  }, 500);
 }
 
 onMounted(() => {
